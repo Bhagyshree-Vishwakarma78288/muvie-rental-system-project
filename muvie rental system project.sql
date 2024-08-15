@@ -117,27 +117,27 @@ select * from movie;
 select * from customers; 
 select * from rentals; 
 
---  List all movies along with their genres.
+-- Q1  List all movies along with their genres.
 select g.genre_id,movie_id,title from movie m 
 inner join genres g 
 on m.genre_id = g.genre_id; 
 
--- Find all movies released after the year 1995.
+-- Q2 Find all movies released after the year 1995.
 select * from movie
 where release_year = "1995" ;
 
- -- List all customers who have rented a movie.
+ -- Q3 List all customers who have rented a movie.
  select concat(first_name," ",last_name) as full_name,c.customers_id, gender from customers c 
  inner join rentals r 
  on c.customers_id = r.customers_id ; 
  
- -- Find the total number of rentals for each movie.
+ -- Q4 Find the total number of rentals for each movie.
  select m.title ,count(rental_id) as total_rentls from movie m 
  inner join rentals r 
  on m.movie_id = r.movie_id
  group by m.title; 
  
- -- List all movies rented by a specific customer (e.g., 'John Doe').
+ -- Q5 List all movies rented by a specific customer (e.g., 'John Doe').
  select m.movie_id , title,language from movie m 
  inner join rentals r 
  on m.movie_id = r.movie_id 
@@ -145,19 +145,19 @@ where release_year = "1995" ;
  on r.customers_id = c.customers_id
  where c.first_name = "John" and c.last_name= "Doe"; 
  
- -- Find the number of movies in each genre.
+ -- Q6 Find the number of movies in each genre.
  select g.genre_name , count(movie_id) as movie_count from genres g 
  join movie m 
  on g.genre_id = m.genre_id
  group by g.genre_name; 
  
- -- List all customers who rented movies in January 2023
+ -- Q7 List all customers who rented movies in January 2023
  select c.customers_id,concat(first_name," ",last_name) as full_name from customers c 
  join rentals r 
  on c.customers_id = r.customers_id 
  where r.rental_date between "2023-01-01" and "2023-01-31" ; 
  
- -- Find the most rented movie
+ -- Q8 Find the most rented movie
  select m.title, count(rental_id) as retal_count from movie m 
  inner join rentals r 
  on m.movie_id = r.movie_id
@@ -165,6 +165,83 @@ where release_year = "1995" ;
  order by retal_count desc
  limit 1 ; 
  
+ -- Q9 . Get all movies that belong to the 'Comedy' genre.
+ select * from genres;
+ select * from customers; 
+ select * from movie; 
+ select * from rentals; 
+ select m.title,g.genre_name from movie m  
+join genres g 
+on m.genre_id = g.genre_id
+where g.genre_name = "Comedy"; 
+
+-- Q10 Update the duration of 'Toy Story' to 82 minutes.
+update movie 
+set duretion = 82 
+where movie_id = 3; 
+
+-- Q11 Find all customers who rented movies directed by 'Steven Spielberg'. 
+select * from rentals;
+select * from customers;
+select * from movie; 
+select concat(c.first_name," ",c.last_name)as full_name,c.customers_id from customers c  
+join rentals r on c.customers_id = r.customers_id 
+join movie m on r.movie_id = m.movie_id 
+where m.directore = "Steven Spielberg"; 
+
+-- Q12 List all movies along with their genres and directors.
+select * from customers; 
+select * from movie;
+select * from genres; 
+select m.title,m.directore,g.genre_name from movie m  
+join genres g 
+on m.genre_id = g.genre_id ; 
+
+-- Q13 Find the customer who has rented the most movies.
+select * from customers; 
+select * from rentals; 
+select * from movie; 
+select distinct first_name,last_name , count(r.rental_id) as rental_count from customers c 
+join rentals r 
+on c.customers_id = r.customers_id 
+group by c.customers_id
+order by rental_count desc
+limit 1; 
+
+-- Q14 Find all movies that have been rented by 'John Doe'.
+select * from movie; 
+select * from rentals;
+select * from customers; 
+select * from movie m 
+join rentals r 
+on m.movie_id = r.movie_id 
+join customers c 
+on r.customers_id = c.customers_id 
+where first_name = "John" and last_name = "Doe"; 
+
+-- Q15 List all genres and how many movies belong to each genre.
+select * from genres;
+select * from movie;
+select g.genre_name,count(m.movie_id) as total_movie from genres g 
+left join movie m 
+on g.genre_id = m.genre_id
+group by g.genre_name ; 
+
+-- Q16 Find all rentals where the return date is before the rental date.
+select * from rentals; 
+select rental_date,return_date from rentals 
+where return_date < rental_date ; 
+
+-- Q17 Get the list of customers who have rented movies directed by 'Francis Ford Coppola'.
+select * from customers; 
+select * from rentals; 
+select * from movie;
+select c.first_name,c.last_name,r.rental_id,r.movie_id from customers c 
+join rentals r
+on c.customers_id = r.customers_id 
+join movie m 
+on m.movie_id = r.movie_id 
+where directore = 'Francis Ford Coppola';
  
  
  
